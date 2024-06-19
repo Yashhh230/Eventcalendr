@@ -1,0 +1,11 @@
+<div class="wrapper" [class.sidebar-collapsed]="!sidebarVisible">
+        <app-sidebar></app-sidebar>
+    <div class="main">
+        <span class="sticky-top top 0 ">
+            <app-header></app-header>
+        </span>
+        <app-page></app-page>
+        <router-outlet></router-outlet>
+        <app-footer></app-footer>
+    </div>
+</div>

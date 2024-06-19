@@ -1,0 +1,53 @@
+
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-12 col-md-8 col-lg-4">
+            <!-- <div class="col-sm">
+                <img src="/assets/main.jpg" alt="login svg" class="img-fluid">
+            </div> -->
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Login</h3>
+                    <form [formGroup]="loginForm" (ngSubmit)="forSubmit()">
+                        <div class="form-group">
+                            <label for="email"><strong>Email address</strong></label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email"
+                                formControlName="email"
+                                [ngClass]="{'is-invalid' :(loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required') )|| (submitted && loginForm.get('email')?.errors )}">
+                                <div *ngIf="loginForm.get('email')?.touched || submitted" class="text-danger">
+                                    <small *ngIf="loginForm.get('email')?.hasError('required')">
+                                        Email is required.
+                                    </small>
+                                    <small *ngIf="loginForm.get('email')?.hasError('email')">
+                                        Enter valid email address
+                                    </small>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><strong>Password</strong></label>
+                            <input type="{{pass}}" class="form-control" id="password" placeholder="Password"
+                                formControlName="password"
+                                [ngClass]="{'is-invalid' :(loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required') )|| (submitted && loginForm.get('password')?.errors )}">
+                                <div
+                                *ngIf="(loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required') )|| (submitted && loginForm.get('password')?.errors )">
+                                <small class="text-danger"
+                                    *ngIf="(loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required') )|| (submitted && loginForm.get('password')?.errors )">
+                                    password is required
+                                </small>
+                             </div> 
+                            <div class="mt-2">
+                                <input  type="checkbox" (click)="myFunction()">
+                                <span class="">Show Password</span>
+                            </div>
+                        </div>
+                       
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <p class="text-center mt-3">
+                            <a href="#">Forgot password?</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

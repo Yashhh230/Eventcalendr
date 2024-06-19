@@ -1,0 +1,29 @@
+
+<div class="container-fluid">
+    <h3 class="text-center pb-2 pt-4 fs-1">Event List</h3>
+    <div class=" d-flex p-1 justify-content-end">
+      <button type="button" class="btn btn-dark" (click)="open()">Add Event</button>
+    </div>  
+    <div class="d-flex justify-content-center mt-5">
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr class="text-center">
+            <th> Roll Number </th>
+            <th>profile</th>
+            <th>Title</th>
+            <th> Start Date Time </th>
+            <th> End Date Time </th>
+            <th> Description</th>
+            <th> Address</th>
+            <th>Action button</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let students of eventList let index as i ;">
+           
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
