@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h4 class="text-center pb-2 pt-2 fs-1">Event List</h4>
+  <h6 class="text-center pb-2 pt-2">Calender Event List</h6>
   <div class=" d-flex p-1 justify-content-end">
     <button type="button" class="btn btn-dark" (click)="open()">Add Event</button>
   </div>
@@ -7,8 +7,7 @@
     <table class="table table-bordered">
       <thead class="table-dark">
         <tr class="text-center">
-          <th> Roll Number</th>
-          <th>profile</th>
+          <th>Image</th>
           <th>Title</th>
           <th> Start Date Time </th>
           <th> End Date Time </th>
@@ -19,31 +18,19 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let students of eventList;">
-        <!-- 
-          <ng-container *ngIf="getLocalStorage.length == 0 ">
-            <tr>
-              <td>
-                No Data Found
-              </td>
-            </tr>
-          </ng-container> -->
-
           <ng-container *ngIf="eventList.length > 0 ">
             <tr>
               <td>
-                {{students.id}}
-              </td>
-              <td>
-                <!-- {{students.image}} -->
+                <img [src]="students.image" alt="">
               </td>
               <td>
                 {{students.Title}}
               </td>
               <td>
-                {{students.Start}}
+                {{students.Start | date: 'dd/MM/yyyy'}}
               </td>
               <td>
-                {{students.End}}
+                {{students.End | date:'dd/MM/yyyy'}}
               </td>
               <td>
                 {{students.description}}
@@ -52,14 +39,18 @@
 
                 {{students.address}}
               </td>
-
               <td>
-                <button type="button" class="btn btn-dark"><i class="bi bi-pen"></i></button>
+                <button type="button" class="btn btn-dark"><i class="bi bi-pen" (click)="Edit(students)"></i></button>
                 <button type="button" class="btn btn-dark"><i class="bi bi-trash"></i></button>
               </td>
             </tr>
           </ng-container>
 
+        </ng-container>
+        <ng-container *ngIf="!eventList.length">
+          <tr class="text-center">
+            <td colspan="7" class="fs-3"> NO DATA FOUND</td>
+          </tr>
         </ng-container>
       </tbody>
     </table>

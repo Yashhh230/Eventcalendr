@@ -1,10 +1,10 @@
-<div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title"></h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+<form [formGroup]="contactForm" id="contact_form" (ngSubmit)="FormSumbit()">
+<div [ngClass]="event ? 'offcanvas-header' : 'modal-header'" class="">
+    <h4 class="modal-title">{{event ? 'Edit Event' : 'Add Event'}}</h4>
+    <button type="button" class="btn-close" aria-label="Close"></button>
 </div>
-<div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto;">
-    <form [formGroup]="contactForm" id="contact_form" (ngSubmit)="FormSumbit()">
-            <legend class="text-center">Add Events</legend>
+<div [ngClass]="event ? 'offcanvas-body' : 'modal-body'" style="max-height: calc(100vh - 200px); overflow-y: auto;">
+            <!-- <legend class="text-center">Add Events</legend> -->
 
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -42,7 +42,7 @@
 
             <div class="mb-3">
                 <label for="formFile" class="form-label">Profile Photo</label>
-                <input class="form-control" type="file" id="formFile" formControlName="image"
+                <input class="form-control" type="file" (change)="getProfilePhoto($event)" id="formFile" formControlName="image"
                 [ngClass]="{'is-invalid' :(contactForm.get('image')?.touched && contactForm.get('image')?.hasError('required') )|| (submitted && contactForm.get('image')?.errors )}">
             </div>
             <div>
@@ -102,11 +102,16 @@
                   ">zip code is required</small>
                     </div>
             </div>
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button type="submit" class="btn btn-dark">Add<span
-                        class="glyphicon glyphicon-send"></span></button>
+           
             </div>
             </div>
+        </div>
+        <div [ngClass]="event ? 'offcanvas-footer' : 'modal-footer'">
+            <div class="row">
+                <div class="d-grid gap-2 col-6 mx-auto text-center">
+                    <button type="submit" class="btn btn-dark">{{event ? 'Save Event' : 'Add Event'}}<span
+                            class="glyphicon glyphicon-send"></span></button>
+                </div>
             </div>
+        </div>
     </form>
-</div>

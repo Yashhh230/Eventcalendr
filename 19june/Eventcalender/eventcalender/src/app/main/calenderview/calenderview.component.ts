@@ -31,13 +31,15 @@ export class CalenderviewComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.loadEvents();
+    this.loadData();
   }
 
-  loadEvents() {
+  loadData() {
     const storedEvents = localStorage.getItem('EventForm');
+    console.log('storedEvents')
     if (storedEvents) {
       const parsedEvents = JSON.parse(storedEvents);
+      console.log(this.events , "this.events")
       this.events = parsedEvents.map((event: any) => this.transformEvent(event));
     }
   }
@@ -68,20 +70,21 @@ export class CalenderviewComponent implements OnInit {
     };
     
     const modalRef = this.modalService.open(AddEditComponent, modalOptions);
-    modalRef.componentInstance.event = event;
     modalRef.componentInstance.Start = selectedDate;
-    console.log(selectedDate,"selectedDate")
-
-    modalRef.componentInstance.eventSaved.subscribe((newEvent: any) => {
-      if (event) {
-        this.events = this.events.map((e) => (e.id === event.id ? { ...e, ...this.transformEvent(newEvent) } : e));
-      } else {
-        const newCalendarEvent = this.transformEvent(newEvent);
-        this.events = [...this.events, { id: Date.now(), ...newCalendarEvent }];
-      }
-      localStorage.setItem('EventForm', JSON.stringify(this.events));
-      this.refresh.next({});
-    });
+  
+    // modalRef.componentInstance.event = event;
+    
+    // modalRef.componentInstance.eventSaved.subscribe((newEvent: any) => {
+    //   if (event) {
+    //     console.log(event ,"event")
+    //     this.events = this.events.map((e) => (e.id === event.id ? { ...e, ...this.transformEvent(newEvent) } : e));
+    //   } else {
+    //     const newCalendarEvent = this.transformEvent(newEvent);
+    //     this.events = [...this.events, { id: Date.now(), ...newCalendarEvent }];
+    //   }
+    //   localStorage.setItem('EventForm', JSON.stringify(this.events));
+    //  
+    // });
   }
 
   setView(view: CalendarView) {
@@ -90,6 +93,9 @@ export class CalenderviewComponent implements OnInit {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+  forEvent(event:any) {
+    console.log(event)
   }
 }
 
