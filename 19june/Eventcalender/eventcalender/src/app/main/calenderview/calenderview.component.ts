@@ -1,49 +1,96 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CalendarEvent, CalendarModule, CalendarView, CalendarWeekModule  } from 'angular-calendar';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule, NgSwitch, NgSwitchCase } from '@angular/common';
+import { CalendarEvent, CalendarModule, CalendarMonthViewDay, CalendarView, CalendarWeekModule  } from 'angular-calendar';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { AddEditComponent } from 'src/app/shared/add-edit/add-edit.component';
+import { Subject } from 'rxjs';
+import { startOfDay, endOfDay } from 'date-fns';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
+import { CustomCalendarEvent } from 'src/app/shared/customcalender';
+
+
 
 
 @Component({
   selector: 'app-calenderview',
   standalone: true,
-  imports: [CommonModule ,  CalendarModule],
+  imports: [CommonModule, CalendarModule , NgSwitch ,NgSwitchCase],
   templateUrl: './calenderview.component.html',
   styleUrls: ['./calenderview.component.scss']
 })
-export class CalenderviewComponent {
+export class CalenderviewComponent implements OnInit {
 
-  activeDayIsOpen: boolean = true;
-
-  // view: CalendarView = CalendarView.Month;
-
-  // CalendarView = CalendarView;
-
-  // viewDate: Date = new Date();
-
-  // events: CalendarEvent[] = [];
-
-  // clickedDate: any;
-  // clickedColumn: any;
-
-  /**
-
-Sets the calender page view */
-  // etView(view: CalendarView) { this.view = view; }
-  CalendarView = CalendarView;
-  view: CalendarView = CalendarView.Month;
-
+  view: CalendarView = CalendarView.Month
   viewDate: Date = new Date();
-
   events: CalendarEvent[] = [];
+  refresh: Subject<any> = new Subject();
+  clickedColumn:any
+  clickedDate: Date | null = null; // Define clickedDate property
+  activeDayIsOpen: boolean = true;
+  CalendarView = CalendarView
+  constructor(private modalService: NgbModal) { }
 
-  clickedDate: any;
-
-  clickedColumn: any;
-  closeOpenMonthViewDay() {
-    this.activeDayIsOpen = false;
+  ngOnInit(): void {
+    this.loadEvents();
   }
+
+  loadEvents() {
+    const storedEvents = localStorage.getItem('EventForm');
+    if (storedEvents) {
+      const parsedEvents = JSON.parse(storedEvents);
+      this.events = parsedEvents.map((event: any) => this.transformEvent(event));
+    }
+  }
+
+  transformEvent(event: any): CustomCalendarEvent {
+    return {
+      id: event.id,
+      title: event.Title,
+      start: new Date(event.Start),
+      end: new Date(event.End),
+      description: event.description,
+      location: event.address,
+      imageUrl: event.image,
+      zip: event.zip
+    };
+  }
+
+  handleDayClicked(event: { day: CalendarMonthViewDay }) {
+    const selectedDate = event.day.date;
+    this.openModal(null, selectedDate);
+  }
+
+  openModal(event: CalendarEvent | null, selectedDate: Date) {
+    const modalOptions: NgbModalOptions = {
+      size: 'lg',
+      backdrop: 'static',
+      keyboard: false
+    };
+    
+    const modalRef = this.modalService.open(AddEditComponent, modalOptions);
+    modalRef.componentInstance.event = event;
+    modalRef.componentInstance.Start = selectedDate;
+    console.log(selectedDate,"selectedDate")
+
+    modalRef.componentInstance.eventSaved.subscribe((newEvent: any) => {
+      if (event) {
+        this.events = this.events.map((e) => (e.id === event.id ? { ...e, ...this.transformEvent(newEvent) } : e));
+      } else {
+        const newCalendarEvent = this.transformEvent(newEvent);
+        this.events = [...this.events, { id: Date.now(), ...newCalendarEvent }];
+      }
+      localStorage.setItem('EventForm', JSON.stringify(this.events));
+      this.refresh.next({});
+    });
+  }
+
   setView(view: CalendarView) {
     this.view = view;
   }
-  
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
+  }
 }
+
+

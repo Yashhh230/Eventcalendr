@@ -18,8 +18,8 @@ body {
 
 a {
     cursor: pointer;
-    text-decoration: none;
     font-family: 'Poppins', sans-serif;
+    text-decoration: none;
 }
 
 li {
@@ -47,7 +47,8 @@ h4 {
     transition: all 0.35s ease-in-out;
 }
 
-.main {
+.main { 
+    margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;

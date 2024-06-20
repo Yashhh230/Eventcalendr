@@ -1,106 +1,112 @@
-<!-- <ng-template #content let-modal> -->
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-        <button type="button" class="btn-close" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <form class="well form-horizontal" action=" " [formGroup]="contactForm" method="post" id="contact_form">
-            <fieldset>
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body" style="max-height: calc(100vh - 200px); overflow-y: auto;">
+    <form [formGroup]="contactForm" id="contact_form" (ngSubmit)="FormSumbit()">
+            <legend class="text-center">Add Events</legend>
 
-                <legend>Add Events</legend>
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Title</label>
-                    <div class="col-md-4 inputGroupContainer">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input name="first_name" placeholder="First Name" class="form-control" type="text" formControlName="Title">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="glyphicon glyphicon-user"></i></span>
+                    <input id="title" class="form-control" type="text" placeholder="Default input"
+                        aria-label="default input example" formControlName="Title"
+                        [ngClass]="{'is-invalid' :(contactForm.get('Title')?.touched && contactForm.get('Title')?.hasError('required') )|| (submitted && contactForm.get('Title')?.errors )}">
+                    </div>
+                    <div>
+                        <div
+                        *ngIf="(contactForm.get('Title')?.touched && contactForm.get('Title')?.hasError('required') )|| (submitted && contactForm.get('Title')?.errors )">
+                        <small class="text-danger"
+                            *ngIf="(contactForm.get('Title')?.touched && contactForm.get('Title')?.hasError('required') )|| (submitted && contactForm.get('Title')?.errors )">
+                            Title field is required
+                        </small>
+                    </div>
+            </div>
+            <div class="mb-3">
+                <label for="title" class="form-label">Description</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="glyphicon glyphicon-user"></i></span>
+                    <input id="title" class="form-control" type="text" placeholder="Default input"
+                        aria-label="default input example" formControlName="description"
+                        [ngClass]="{'is-invalid' :(contactForm.get('description')?.touched && contactForm.get('description')?.hasError('required') )|| (submitted && contactForm.get('description')?.errors )}">
+                    </div>
+                    <div>
+                        <small class="text-danger" *ngIf="
+                        (contactForm.get('description')?.touched || submitted) &&
+                        contactForm.get('description')?.hasError('required')
+                      ">Description is required</small>
+                    </div>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Profile Photo</label>
+                <input class="form-control" type="file" id="formFile" formControlName="image"
+                [ngClass]="{'is-invalid' :(contactForm.get('image')?.touched && contactForm.get('image')?.hasError('required') )|| (submitted && contactForm.get('image')?.errors )}">
+            </div>
+            <div>
+
+            <small class="text-danger" *ngIf="
+            (contactForm.get('image')?.touched || submitted) &&
+            contactForm.get('image')?.hasError('required')
+          ">photo is required</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="startDateTime" class="form-label">Start Date Time</label>
+                <div class="input-group">
+                    <input id="startDateTime" class="form-control" placeholder="yyyy-mm-dd" name="dp" type="date" formControlName="Start"  [ngClass]="{'is-invalid' :(contactForm.get('Start')?.touched && contactForm.get('Start')?.hasError('required') )|| (submitted && contactForm.get('Start')?.errors )}" />           
                         </div>
-                    </div>
+                        <div>
+
+                        <small class="text-danger" *ngIf="
+                        (contactForm.get('Start')?.touched || submitted) &&
+                        contactForm.get('Start')?.hasError('required')
+                      ">Date is required</small>
+                        </div> 
+            </div>
+
+            <div class="mb-3">
+                <label for="endDateTime" class="form-label">End Date Time</label>
+                <div class="input-group">
+                    <input id="endDateTime" class="form-control" placeholder="yyyy-mm-dd" name="dp"  formControlName="End" 
+                    type="date" />
                 </div>
+            <div class="mb-3">
+                <label for="city" class="form-label">Address</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="glyphicon glyphicon-home"></i></span>
+                    <input id="city" class="form-control" type="text" placeholder="City" formControlName="address"  [ngClass]="{'is-invalid' :(contactForm.get('address')?.touched && contactForm.get('address')?.hasError('required') )|| (submitted && contactForm.get('address')?.errors )}" >
 
-                <!-- Text input-->
-
-                <div class="form-group">
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Default file input example</label>
-                        <input class="form-control" type="file" id="formFile" formControlName="image">
-                    </div>
                 </div>
+                <div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">E-Mail</label>
-                    <div class="col-md-4 inputGroupContainer">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                            <input name="email" placeholder="E-Mail Address" class="form-control" type="text" formControlName="email">
-                        </div>
+                    <small class="text-danger" *ngIf="
+                    (contactForm.get('address')?.touched || submitted) &&
+                    contactForm.get('address')?.hasError('required')
+                  ">Address is required</small>
                     </div>
+            </div>
+            <div class="mb-3">
+                <label for="zip" class="form-label">Zip Code</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="glyphicon glyphicon-home"></i></span>
+                    <input id="zip" class="form-control" type="text" placeholder="Zip Code" formControlName="zip"
+                    [ngClass]="{'is-invalid' :(contactForm.get('zip')?.touched && contactForm.get('zip')?.hasError('required') )|| (submitted && contactForm.get('zip')?.errors )}" >
                 </div>
-
-
-                <!-- Text input-->
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Phone #</label>
-                    <div class="col-md-4 inputGroupContainer">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-                            <input name="phone" placeholder="(845)555-1212" class="form-control" type="text">
-                        </div>
+                <div>
+                    <small class="text-danger" *ngIf="
+                    (contactForm.get('zip')?.touched || submitted) &&
+                    contactForm.get('zip')?.hasError('required')
+                  ">zip code is required</small>
                     </div>
-                </div>
-
-                <!-- Text input-->
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Address</label>
-                    <div class="col-md-4 inputGroupContainer">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-                            <input name="address" placeholder="Address" class="form-control" type="text">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Text input-->
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label">City</label>
-                    <div class="col-md-4 inputGroupContainer">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-                            <input name="city" placeholder="city" class="form-control" type="text">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Select Basic -->
-
-                <!-- Text input-->
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Zip Code</label>
-                    <div class="col-md-4 inputGroupContainer">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-                            <input name="zip" placeholder="Zip Code" class="form-control" type="text">
-                        </div>
-                    </div>
-                </div>
-                <!-- Success message -->
-
-
-                <!-- Button -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label"></label>
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-warning">Send <span
-                                class="glyphicon glyphicon-send"></span></button>
-                    </div>
-                </div>
-
-            </fieldset>
-        </form>
-    </div>
-<!-- </ng-template> -->
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button type="submit" class="btn btn-dark">Add<span
+                        class="glyphicon glyphicon-send"></span></button>
+            </div>
+            </div>
+            </div>
+    </form>
+</div>
